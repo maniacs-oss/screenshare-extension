@@ -14,15 +14,24 @@ port.onMessage.addListener(function (message) {
     window.postMessage(response('permissionDenied', message.payload), '*');
   } else if (message && message.method === 'sourceId') {
     window.postMessage(response('sourceId', message.payload), '*');
+  } else if (message && message.method === 'registrationId') {
+    window.postMessage({
+      method: 'registrationId',
+      payload: message.payload,
+      from: 'extension'
+    }, '*');
   }
 });
 
 // this event handler watches for messages sent from the webpage
 // it receives those messages and forwards to background script
 window.addEventListener('message', function (event) {
-
-  if (event.source != window) {
+  if(event.source != window) {
     return;
+  }
+
+  if(event.data != null && typeof event.data === 'object' && event.data.method) {
+    return port.postMessage({ method: event.data.method });
   }
 
   if(!(event.data != null && typeof event.data === 'object' && event.data[prefix]
@@ -51,5 +60,5 @@ window.addEventListener('message', function (event) {
   }
 });
 
-// inform browser that you're available!
+// inform browser client that we're available
 window.postMessage(response('extensionLoaded'), '*');

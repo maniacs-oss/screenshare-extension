@@ -1,10 +1,10 @@
 {
-  "name" : "Speak Screen Sharing",
+  "name" : "Speak Screensharing",
   "author": "Speak",
-  "version" : "1.0",
+  "version" : "1.1",
   "manifest_version" : 2,
   "minimum_chrome_version": "34",
-  "description" : "Share your tabs and screen on Speak!",
+  "description" : "Share your screen or windows on Speak!",
   "homepage_url": "https://speak.io/",
   "background": {
     "scripts": ["background-script.js"],
@@ -13,7 +13,7 @@
   "content_scripts": [ {
    "js": [ "content-script.js" ],
    "all_frames": true,
-   "matches": ["https://*.speak.io/*"]
+   "matches": ["https://*.speak.io/*", "http://*.speak.io/*"]
   }],
   "icons": {
     "16": "logo16.png",
@@ -21,7 +21,10 @@
     "128": "logo128.png"
   },
   "permissions": [
-    "desktopCapture"
+    "desktopCapture",
+    "notifications",
+    "storage",
+    "gcm"
   ],
   "web_accessible_resources": [
     "icon.png"
