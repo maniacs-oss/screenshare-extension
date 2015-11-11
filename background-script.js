@@ -69,11 +69,16 @@ chrome.gcm.onMessage.addListener(function(event) {
     message = 'Joined your Speak call';
   }
 
+  var title = params.user.first_name;
+  if (params.user.last_name) {
+    title += " " + params.user.last_name;
+  }
+
   var id = "n" + (new Date()).getTime();
   var notif = chrome.notifications.create(id, {
     type: 'basic',
-    iconUrl: 'logo128.png',
-    title: params.user.first_name + " Joined",
+    iconUrl: 'logo-notification.png',
+    title: title,
     message: message,
     buttons: [{
       title: 'Join'
