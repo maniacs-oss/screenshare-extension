@@ -59,6 +59,30 @@
   }
 });
 
-chrome.gcm.onMessage.addListener(function(message) {
-  console.log(message);
+chrome.gcm.onMessage.addListener(function(event) {
+  var message;
+  var params = JSON.parse(event.data.params);
+
+  if (params.channel.name) { 
+    message = 'Joined your "' + params.channel.name + '" call';
+  } else {
+    message = 'Joined your Speak call';
+  }
+
+  var id = "n" + (new Date()).getTime();
+  var notif = chrome.notifications.create(id, {
+    type: 'basic',
+    iconUrl: 'logo128.png',
+    title: params.user.first_name + " Joined",
+    message: message,
+    buttons: [{
+      title: 'Join'
+    }]
+  });
+  
+  chrome.notifications.onButtonClicked.addListener(function(notificationId){
+    if (notificationId == id) {
+      chrome.tabs.create({ url: params.channel.public_url });
+    }
+  });
 });

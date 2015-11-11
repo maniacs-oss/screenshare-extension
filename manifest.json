@@ -24,6 +24,7 @@
     "desktopCapture",
     "notifications",
     "storage",
+    "tabs",
     "gcm"
   ],
   "web_accessible_resources": [
